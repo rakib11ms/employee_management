@@ -1,5 +1,34 @@
+import axios from 'axios'
+import { useState } from 'react'
 import '../Register/register.css'
+import { Navigate, useNavigate } from 'react-router-dom'
 function Register() {
+
+    const navigate=useNavigate();
+    const [registerInputState,setRegisterInputState]=useState({
+        name:"",
+        email:"",
+        password:"",
+        confirm_password:""
+    })
+
+   const handleChange=(e)=>{
+    setRegisterInputState({
+        ...registerInputState,[e.target.name]:e.target.value
+    })
+   }
+   axios.post(`/save-registration`, registerInputState).then(res => {
+    if (res.data.status == 200) {
+        navigate('/view-all-jobs')
+        setRegisterInputState({
+                name:"",
+                email:"",
+                password:"",
+                confirm_password:""
+        });
+
+    }
+});
     return (
         <>
             <div class="wrapper">
@@ -20,8 +49,8 @@ function Register() {
                     <h2 class="text-uppercase">Registration form</h2>
                     <div class="row">
                         <div class="col-sm-12 mb-3">
-                            <label>First Name</label>
-                            <input type="text" name="first_name" id="first_name" class="input-field" />
+                            <label>Full Name</label>
+                            <input type="text" name="name" id="name"value={registerInputState.name} class="input-field" onChange={handleChange}/>
                         </div>
                         {/* <div class="col-sm-6 mb-3">
                     <label>Last Name</label>
@@ -30,16 +59,16 @@ function Register() {
                     </div>
                     <div class="mb-3">
                         <label>Your Email</label>
-                        <input type="email" class="input-field" name="email" required />
+                        <input type="email" class="input-field" name="email" value={registerInputState.email} required onChange={handleChange} />
                     </div>
                     <div class="row">
                         <div class="col-sm-6 mb-3">
                             <label>Password</label>
-                            <input type="password" name="pwd" id="pwd" class="input-field" />
+                            <input type="password" name="password" id="password" class="input-field" value={registerInputState.password} onChange={handleChange}/>
                         </div>
                         <div class="col-sm-6 mb-3">
-                            <label>Current Password</label>
-                            <input type="password" name="cpwd" id="cpwd" class="input-field" />
+                            <label>Confirm Password</label>
+                            <input type="password" name="confirm_password" id="confirm_password"  value={registerInputState.confirm_password} onChange={handleChange} class="input-field" />
                         </div>
                     </div>
                     <div class="mb-3">
