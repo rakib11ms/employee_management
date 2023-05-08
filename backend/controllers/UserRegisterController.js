@@ -9,7 +9,7 @@ const createToken=(_id)=>{
   const createRegister=async (req,res)=>{
         const {name,email,password,confirm_password}=req.body;
         try{
-            const user=await User.signup(name,email,password,confirm_password);
+            const user=await User.create(req.body);
             const token=createToken(user._id);
             res.status(200).json({email,token})
         }
@@ -22,6 +22,12 @@ const createToken=(_id)=>{
   
 
   const loginUser=async (req,res)=>{
+        res.json({
+            'success':true
+        })
+  }
 
+  module.exports={
+    createRegister,loginUser
   }
 

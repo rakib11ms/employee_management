@@ -1,9 +1,8 @@
+import '../Register/register.css';
 import axios from 'axios'
 import { useState } from 'react'
-import '../Register/register.css'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-function Register() {
-
+function Login(){
     const navigate=useNavigate();
     const [registerInputState,setRegisterInputState]=useState({
         name:"",
@@ -17,24 +16,18 @@ function Register() {
         ...registerInputState,[e.target.name]:e.target.value
     })
    }
+   axios.post(`/save-registration`, registerInputState).then(res => {
+    if (res.data.status == 200) {
+        navigate('/view-all-jobs')
+        setRegisterInputState({
+                name:"",
+                email:"",
+                password:"",
+                confirm_password:""
+        });
 
-   const handleRegisterSubmit=(e)=>{
-    e.preventDefault();
-    axios.post(`/register`, registerInputState).then(res => {
-        if (res.data.status == 200) {
-            // navigate('/view-all-jobs')
-            setRegisterInputState({
-                    name:"",
-                    email:"",
-                    password:"",
-                    confirm_password:""
-            });
-    
-        }
-    });
-   }
-
-
+    }
+});
     return (
         <>
             <div class="wrapper">
@@ -48,52 +41,44 @@ function Register() {
                         Vitae auctor eu augudsf ut. Malesuada nunc vel risus commodo viverra. Praesent elementum facilisis leo vel.
                     </p>
                     <div class="form-field">
-                        <Link to="/login">
-                        <input type="text" class="account" value="Have an Account?" />
+                        <Link to="/register">
+                        <input type="text" class="account" value="Haven't account?" />
 
                         </Link>
                     </div>
                 </div>
-                <form class="form-right" id="registerForm" onSubmit={handleRegisterSubmit}>
-                    <h2 class="text-uppercase">Registration form</h2>
+                <form class="form-right">
+                    <h2 class="text-uppercase">Login form</h2>
                     <div class="row">
                         <div class="col-sm-12 mb-3">
-                            <label>Full Name</label>
-                            <input type="text" name="name" id="name"value={registerInputState.name} class="input-field" onChange={handleChange}/>
+                            <label>Your Email</label>
+                            <input type="email" class="input-field" name="email" value={registerInputState.email} required onChange={handleChange} />
                         </div>
                         {/* <div class="col-sm-6 mb-3">
                     <label>Last Name</label>
                     <input type="text" name="last_name" id="last_name" class="input-field"/>
                 </div> */}
                     </div>
-                    <div class="mb-3">
-                        <label>Your Email</label>
-                        <input type="email" class="input-field" name="email" value={registerInputState.email} required onChange={handleChange} />
-                    </div>
+                 
                     <div class="row">
-                        <div class="col-sm-6 mb-3">
+                        <div class="col-sm-12 mb-3">
                             <label>Password</label>
                             <input type="password" name="password" id="password" class="input-field" value={registerInputState.password} onChange={handleChange}/>
                         </div>
-                        <div class="col-sm-6 mb-3">
-                            <label>Confirm Password</label>
-                            <input type="password" name="confirm_password" id="confirm_password"  value={registerInputState.confirm_password} onChange={handleChange} class="input-field" />
-                        </div>
+                      
                     </div>
                     <div class="mb-3">
-                        <label class="option">I agree to the <a href="#">Terms and Conditions</a>
+                        <label class="option">Remember Password 
                             <input type="checkbox" />
                             <span class="checkmark"></span>
                         </label>
                     </div>
                     <div class="form-field">
-                        <input type="submit" value="Register" class="register" name="register" />
+                        <input type="submit" value="Login" class="register" name="register" />
                     </div>
                 </form>
             </div>
         </>
     )
 }
-
-export default Register
-
+export default Login;

@@ -9,13 +9,16 @@
 }
 
 body{
-    background: #00E5FF;
+    background: #f1f1f1;
     min-height: 100vh;
+
 }
 
 .wrapper{
     max-width: 850px;
     background-color: #fff;
+    /* background: #00E5FF; */
+
     border-radius: 10px;
     position: relative;
     display: flex;
