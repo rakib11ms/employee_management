@@ -22,7 +22,7 @@ function Register() {
     e.preventDefault();
     axios.post(`/register`, registerInputState).then(res => {
         if (res.data.status == 200) {
-            // navigate('/view-all-jobs')
+            navigate('/login')
             setRegisterInputState({
                     name:"",
                     email:"",

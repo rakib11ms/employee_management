@@ -1,51 +1,18 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-const validator=require('validator')
-const bcrypt=require('bcrypt')
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  confirm_password: { type: String},
+});
 
-const Schema=mongoose.Schema
+userSchema.methods.comparePassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
 
-const UserRegisterSchema=new Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    email:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    password:{
-        type:String,
-        required:true,
-    },
-    confirm_password:{
-        type:String,
-        required:true,
-    }
-})
 
-// UserRegisterSchema.statics.signup=async function (name,email,password,confirm_password) {
-//     if(!name || !email || !password || !confirm_password){
-//         throw Error("All fileds must be field")
-//     }
-//     if(!validator.isEmail(email)){
-//         throw Error("Email is not valid")
+const User = mongoose.model('User', userSchema);
 
-//     }
-//     if(!validator.isStrongPassword(password)){
-//         throw Error("Password not strong enough")
-
-//     }
-//     const exits=await this.findOne({email})
-//     if(exits){
-//         throw Error("Email already in use")
-
-//     }
-
-//     const salt=await bcrypt.genSalt(10);
-//     const hash=await bcrypt.hash(password,salt)
-//     const user=await this.create({name,email,password:hash});
-//     return user;
-// }
-module.exports=mongoose.model('User',UserRegisterSchema);
+module.exports = User;

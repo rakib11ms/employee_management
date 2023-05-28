@@ -2,32 +2,52 @@ import '../Register/register.css';
 import axios from 'axios'
 import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-function Login(){
-    const navigate=useNavigate();
-    const [registerInputState,setRegisterInputState]=useState({
-        name:"",
-        email:"",
-        password:"",
-        confirm_password:""
+import Swal from 'sweetalert2';
+
+function Login() {
+    const navigate = useNavigate();
+    const [loginInput, setloginInput] = useState({
+        email: "",
+        password: "",
     })
 
-   const handleChange=(e)=>{
-    setRegisterInputState({
-        ...registerInputState,[e.target.name]:e.target.value
-    })
-   }
-   axios.post(`/save-registration`, registerInputState).then(res => {
-    if (res.data.status == 200) {
-        navigate('/view-all-jobs')
-        setRegisterInputState({
-                name:"",
-                email:"",
-                password:"",
-                confirm_password:""
-        });
-
+    const handleChange = (e) => {
+        setloginInput({
+            ...loginInput, [e.target.name]: e.target.value
+        })
     }
-});
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        axios.post('/api/login', loginInput).then(res => {
+            const user = res.data.user;
+
+            // Save user information in localStorage
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('auth_token', res.data.token);
+            console.log(res.data);
+            if(res.data.status==200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Login Successfull',
+                    confirmButtonText: 'OK',
+                });
+                navigate('/dashboard')
+            }
+            else if(res.data.status==400){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.error,
+                    confirmButtonText: 'OK',
+                });
+            }
+    
+        })
+    };
     return (
         <>
             <div class="wrapper">
@@ -42,39 +62,34 @@ function Login(){
                     </p>
                     <div class="form-field">
                         <Link to="/register">
-                        <input type="text" class="account" value="Haven't account?" />
+                            <input type="text" class="account" value="Haven't account?" />
 
                         </Link>
                     </div>
                 </div>
-                <form class="form-right">
+                <form class="form-right" onSubmit={handleSubmit}>
                     <h2 class="text-uppercase">Login form</h2>
                     <div class="row">
                         <div class="col-sm-12 mb-3">
                             <label>Your Email</label>
-                            <input type="email" class="input-field" name="email" value={registerInputState.email} required onChange={handleChange} />
+                            <input type="email" class="input-field" name="email" value={loginInput.email} required onChange={handleChange} />
                         </div>
                         {/* <div class="col-sm-6 mb-3">
                     <label>Last Name</label>
                     <input type="text" name="last_name" id="last_name" class="input-field"/>
                 </div> */}
                     </div>
-                 
+
                     <div class="row">
                         <div class="col-sm-12 mb-3">
                             <label>Password</label>
-                            <input type="password" name="password" id="password" class="input-field" value={registerInputState.password} onChange={handleChange}/>
+                            <input type="password" name="password" id="password" class="input-field" value={loginInput.password} onChange={handleChange} />
                         </div>
-                      
+
                     </div>
-                    <div class="mb-3">
-                        <label class="option">Remember Password 
-                            <input type="checkbox" />
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
+
                     <div class="form-field">
-                        <input type="submit" value="Login" class="register" name="register" />
+                        <input type="submit" value="Login" class="register" name="login" />
                     </div>
                 </form>
             </div>
