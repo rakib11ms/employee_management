@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   confirm_password: { type: String},
+  resetToken:{type:String},
+  resetTokenExpiration:{type:String}
+
 });
 
 userSchema.methods.comparePassword = async function (password) {

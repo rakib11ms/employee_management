@@ -1,10 +1,8 @@
 const { check, validationResult } = require('express-validator');
 const express=require('express');
 const router=express.Router();
-
-// const UserRegister=require('../models/UserModel');
-// const UserRegisterController=require('../controllers/UserRegisterController')
-const {createRegister,login}=require('../controllers/UserRegisterController')
+const {createRegister,login,changeUserPassword,forgotPassword}=require('../controllers/UserRegisterController')
+const isAuthenticated=require('../middleware/auth')
 
 
 router.post('/register',  [
@@ -14,6 +12,9 @@ router.post('/register',  [
   ],createRegister)
 
   router.post('/login',login)
+  router.put('/change-password/:userId',isAuthenticated,changeUserPassword)
+  router.post('/forgot-password',forgotPassword)
+
 
 
 module.exports=router;
