@@ -234,12 +234,56 @@ const forgotPassword = async (req, res) => {
 }
 
 
+const checkmail=async (req,res)=>{
+
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            auth: {
+                user: 'rakibhossain18156@gmail.com',
+                pass: 'idojhamajvgtkezp'
+            }
+        });
+        const recipients = [
+          // Array of recipient email addresses
+          'rakib10ms@gmail.com',
+          'rakibtech9@gmail.com',
+          // ... add more recipients
+        ];
+    
+        // Create an array of Promise objects representing each email sending task
+        const emailTasks = recipients.map((recipient) => {
+          const emailOptions = {
+            from: 'sender@example.com',
+            to: recipient,
+            subject: 'Your Email Subject',
+            text: 'Your email content goes here',
+          };
+    
+          // Return a Promise representing the email sending task
+          return transporter.sendMail(emailOptions);
+        });
+    
+        // Execute all email sending tasks concurrently
+        await Promise.all(emailTasks);
+    
+        res.json({ message: 'Emails sent successfully' });
+      } catch (error) {
+        console.error('Error sending emails:', error);
+        res.status(500).json({ error: 'Failed to send emails' });
+      }
+
+
+}
+
 
 
 
 
 
 module.exports = {
-    createRegister, login, changeUserPassword, forgotPassword
+    createRegister, login, changeUserPassword, forgotPassword,checkmail
 }
 
