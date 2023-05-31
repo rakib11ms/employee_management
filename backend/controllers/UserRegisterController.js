@@ -250,6 +250,23 @@ const checkmail=async (req,res)=>{
           // Array of recipient email addresses
           'rakib10ms@gmail.com',
           'rakibtech9@gmail.com',
+          'rakib18151@gmail.com',     
+          'rakib102@gmail.com',
+          'rakib1042@gmail.com',
+          'rakib1815@gmail.com',
+          'rasel@gmail.com',
+          'rakibgmail.com',
+          'raku@gmail.com',
+          'rakib586@gmail.com',
+          'shawon1@gmail.com',
+          'shawon2@gmail.com',
+          'shawon3@gmail.com',
+          'shawon4@gmail.com',
+          'shawon6@gmail.com',
+          'shawon8@gmail.com',
+          'shawon9@gmail.com',
+          'shawon10@gmail.com',
+
           // ... add more recipients
         ];
     
